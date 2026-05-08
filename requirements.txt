@@ -1,0 +1,18 @@
+# Работа с данными
+pandas
+pyarrow
+xlsxwriter
+openpyxl
+
+# База данных
+oracledb
+sqlalchemy
+cryptography
+
+# ИИ и Сеть (Ollama & Telegram)
+requests
+httpx
+python-dotenv
+
+# Утилиты
+tqdm

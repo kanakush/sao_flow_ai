@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.env
+log.txt
+.idea/
+*.db
+data/
+ .idea/
+*.parquet
+*.xlsx

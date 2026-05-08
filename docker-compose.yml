@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  sao-sentinel:
+    build: .
+    container_name: sao_flow_ai_app
+    volumes:
+      - ./.env:/app/.env
+      - ./logs:/app/logs
+      # Монтируем локальную папку для сохранения отчетов (если не используется сетевой диск)
+      - /your/local/path/reports:/mnt/reports
+    restart: unless-stopped
+    env_file:
+      - .env
