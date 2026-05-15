@@ -43,12 +43,8 @@ def extract_month_data():
     e_date = end_dt.strftime('%Y-%m-%d %H:%M:%S')
 
     # Формируем строки дат для названия файла (20260316_20260322)
-    f"{start_dt.strftime('%Y%m%d')}_{end_dt.strftime('%Y%m%d')}"
+    file_period = f"{start_dt.strftime('%Y%m%d')}_{end_dt.strftime('%Y%m%d')}"
 
-    print(f"Выгрузка за период: {s_date} - {e_date}...")
-
-    # Используем LISTAGG с ON OVERFLOW TRUNCATE, чтобы избежать ошибок длинных строк
-    # И REGEXP_REPLACE для удаления непечатаемых символов
     query = f"""
 SELECT / here your script
     """
@@ -83,7 +79,7 @@ SELECT / here your script
         df['TEH'] = df['TEH'].astype(str).str.strip()
 
         # Формируем прямую ссылку на тикет
-        df['LINK'] = 'http://sao.kcell.kz/bt/view?id=' + df['ID_TICKET'].astype(str)
+        df['LINK'] = 'http://link=' + df['ID_TICKET'].astype(str)
 
         # Выбираем итоговый набор столбцов для Parquet
         final_cols = [
@@ -96,13 +92,9 @@ SELECT / here your script
         if not os.path.exists(raw_dir):
             os.makedirs(raw_dir)
 
-        now = datetime.now()
-
-        first_day_this_month = now.replace(day=1)
-        last_day_prev_month = first_day_this_month - timedelta(days=1)
-
-        month_str = last_day_prev_month.strftime('%Y_%B')
-        filename = f"raw_month_{month_str}.parquet"
+        start_df, end_df = get_last_month_range()
+        month_str = start_df.strftime('%Y_%B')
+        filename = f"raw_month_wrong_{month_str}.parquet"
 
         # 4. Сборка полного пути
         file_path = os.path.join(raw_dir, filename)
@@ -115,10 +107,6 @@ SELECT / here your script
         except Exception as e:
             print(f"❌ Ошибка при сохранении: {e}")
             return None
-
-    except Exception as e:
-        print(f"Ошибка выгрузки: {e}")
-        return None
     finally:
         if conn:
             conn.close()
