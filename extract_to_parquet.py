@@ -90,14 +90,11 @@ SELECT /here your script
 
         # --- СОХРАНЕНИЕ ---
         raw_dir = os.getenv("RAW_DATA_PATH", "./raw_week_reports/")
-        if not os.path.exists(raw_dir): os.makedirs(raw_dir)
+        if not os.path.exists(raw_dir):
+            os.makedirs(raw_dir)
 
-        now = datetime.now()
-
-        first_day_this_week = now.replace(day=1)
-        last_day_prev_week = first_day_this_week - timedelta(days=1)
-
-        week_str = last_day_prev_week.strftime('%G_W%V')
+        start_dt, end_dt = get_last_week_range()
+        week_str = start_dt.strftime('%G_W%V')
         filename = f"raw_week_{week_str}.parquet"
 
         # 4. Сборка полного пути
@@ -111,13 +108,10 @@ SELECT /here your script
         except Exception as e:
             print(f"❌ Ошибка при сохранении: {e}")
             return None
-
-    except Exception as e:
-        print(f"Ошибка выгрузки: {e}")
-        return None
     finally:
         if conn:
             conn.close()
+
 
 if __name__ == "__main__":
     extract_weekly_data()
