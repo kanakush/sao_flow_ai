@@ -80,7 +80,7 @@ SELECT /here your script
         df['TEH'] = df['TEH'].astype(str).str.strip()
 
         # Формируем прямую ссылку на тикет
-        df['LINK'] = 'http://sao.kcell.kz/bt/view?id=' + df['ID_TICKET'].astype(str)
+        df['LINK'] = 'http://link=' + df['ID_TICKET'].astype(str)
 
         # Выбираем итоговый набор столбцов для Parquet
         final_cols = [
